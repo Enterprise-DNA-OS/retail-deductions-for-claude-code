@@ -1,15 +1,11 @@
 name: Verify commands
-on:
-  # Manual only since 2026-10-18 to save GitHub Actions minutes (Sam). To restore, put back:
-  # push:
-  #   branches: [main]
-  workflow_dispatch:
+# Manual verification preserves the rebuild template scheduling policy.
+on: workflow_dispatch
 permissions:
   contents: read
 jobs:
-  smoke:
+  embedded:
     strategy:
-      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         node: [20, 22]
@@ -27,19 +23,20 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:17
+        image: postgres:16
         env:
-          POSTGRES_PASSWORD: disposable
-          POSTGRES_DB: rebuild_test
+          POSTGRES_PASSWORD: disposable-test-only
+          POSTGRES_DB: deductions_test
         ports: ['5432:5432']
-        options: --health-cmd pg_isready --health-interval 5s --health-retries 10
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: 22
           cache: npm
       - run: npm ci
       - run: npm test
         env:
-          TEST_DATABASE_URL: postgres://postgres:disposable@localhost:5432/rebuild_test?sslmode=disable
+          DEDUCTIONS_TEST_DATABASE_URL: postgres://postgres:disposable-test-only@localhost:5432/deductions_test?sslmode=disable

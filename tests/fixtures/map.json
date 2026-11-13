@@ -1,0 +1,10 @@
+{
+  "retailer": "Distributor",
+  "reference": "Deduction ID",
+  "invoice": "Invoice",
+  "reason": "Category",
+  "currency": "Currency",
+  "amount": "Amount",
+  "deducted_on": "Date",
+  "owner": "Owner"
+}

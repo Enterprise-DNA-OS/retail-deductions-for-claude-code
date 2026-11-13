@@ -1,13 +1,35 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Retail Deductions for Claude Code: what needs attention, rendered by npm run view",
+    "title": "This week in deductions",
     "sections": [
       {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "title": "What needs attention",
+        "sql": "select * from deduction_attention order by days_left nulls first,reference"
+      },
+      {
+        "title": "Root cause actions",
+        "sql": "select title,owner,due_on,reference,retailer from action_workload order by due_on"
+      }
+    ]
+  },
+  {
+    "name": "patterns",
+    "title": "Retailer deduction patterns",
+    "sections": [
+      {
+        "title": "By retailer, reason and currency",
+        "sql": "select * from deduction_patterns order by retailer,reason,currency"
+      }
+    ]
+  },
+  {
+    "name": "recovery",
+    "title": "Recovery reconciliation",
+    "sections": [
+      {
+        "title": "Disputed deductions",
+        "sql": "select reference,retailer,currency,amount_cents,claimed_cents,recovered_cents,outstanding_cents,follow_up from deduction_position where state='disputed' order by reference"
       }
     ]
   }

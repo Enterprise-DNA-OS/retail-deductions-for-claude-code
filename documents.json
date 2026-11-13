@@ -1,11 +1,62 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
-    "file": "name",
+    "name": "dispute-pack",
+    "title": "Deduction dispute review pack",
+    "for_each": "select id,reference from deductions order by reference",
+    "file": "reference",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Deduction",
+        "layout": "record",
+        "sql": "select reference,retailer,invoice,reason,currency,amount_cents,deadline,deadline_source,state,reconciled_ref from deduction_position where id=$1"
+      },
+      {
+        "title": "Evidence index",
+        "note": "References only. Review originals and assemble attachments separately before submitting.",
+        "sql": "select kind,reference,actor from evidence where deduction_id=$1 order by kind,reference"
+      },
+      {
+        "title": "Notes",
+        "sql": "select body,actor,created_at from notes where deduction_id=$1 order by created_at"
+      }
+    ]
+  },
+  {
+    "name": "recovery-statement",
+    "title": "Recovery reconciliation statement",
+    "for_each": "select id,reference from deductions order by reference",
+    "file": "reference",
+    "sections": [
+      {
+        "title": "Position",
+        "layout": "record",
+        "sql": "select reference,retailer,currency,amount_cents,claimed_cents,recovered_cents,outstanding_cents,state,resolution_ref from deduction_position where id=$1"
+      },
+      {
+        "title": "Recorded recoveries",
+        "sql": "select reference,received_on,amount_cents,actor from recoveries where deduction_id=$1 order by received_on"
+      },
+      {
+        "title": "Dispute receipt",
+        "sql": "select reference,submitted_on,follow_up,claimed_cents from disputes where deduction_id=$1"
+      }
+    ]
+  },
+  {
+    "name": "root-cause-review",
+    "title": "Root cause review",
+    "for_each": "select id,reference from deductions order by reference",
+    "file": "reference",
+    "sections": [
+      {
+        "title": "Deduction",
+        "layout": "record",
+        "sql": "select reference,retailer,reason,owner,state from deduction_position where id=$1"
+      },
+      {
+        "title": "Corrective actions",
+        "sql": "select title,owner,due_on,closed_on,proof from actions where deduction_id=$1 order by due_on"
+      }
     ]
   }
 ]

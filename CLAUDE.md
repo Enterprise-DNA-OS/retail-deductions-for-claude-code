@@ -1,43 +1,53 @@
-# Retail Deductions for Claude Code: operating instructions
+# Retail Deductions for Claude Code
 
-This file is the brain. Claude Code reads it at the start of every session. It says who this is for, how work gets done, and the one right way to do each recurring job.
+A local deduction investigation and recovery desk for suppliers. The database holds the record. Read it before answering; all demo records are fictional.
 
-## Who this is for
+Use node scripts/deductions.mjs help for the one CLI. Every mutation needs --actor with the actual operator name. This is attribution, not authentication. Shared deployment requires private database access, least privilege and tested backups. Never expose the owner connection.
 
-- **Business:** [YOUR BUSINESS]
-- **Operator:** [YOUR NAME], [your role]
-- **What matters most:** [the one or two outcomes you care about]
+Do not submit a dispute, send a message, initiate a payment or post accounting entries. Record a submission or recovery only when the operator supplies an actual receipt or remittance. Evidence references are not attachments and are never fetched automatically. Keep generated documents and export folders private.
 
-Fill this in once. A worker with context knows. A worker without it guesses.
+Import records start on hold. Read docs/replace-trewup.md, map actual headings and reconcile against originals before clearing the hold. Use the exact retailer terms for deadline and proof. Local evidence rules are business policy, not law. Read docs/compliance.md before interpreting a check. Missing evidence is not a legal verdict.
 
-## How to work
+Do not aggregate different currencies. Do not overwrite historical disputes, evidence, notes, recoveries or activity. Correct mistakes through an explicitly authorised forward migration with an audit record and a test, not a silent rewrite.
 
-1. **Take a brief, not a script.** The operator describes the outcome. You run the right command and present the answer.
-2. **Read before you write.** Before drafting anything about a record, read its full history first.
-3. **Plain language.** Short sentences. No filler. Numbers in tables.
-4. **Silent success, loud problems.** No play-by-play. Say what broke and what you did about it.
-5. **Stop at the line.** Anything that sends, deletes, or faces a customer waits for a yes in this session.
+## Commands
 
-## Routing table: one right way for each recurring job
+- /retailers: retailers
+- /deductions: deductions
+- /attention: Review held deductions, evidence gaps, approaching deadlines and late responses.
+- /dispute-ready: List reconciled deductions with the evidence and dates needed to prepare a dispute.
+- /deadlines-due: Review unknown, expired and approaching dispute deadlines.
+- /evidence-gaps: Find which invoice or supporting record is missing.
+- /follow-ups: Chase a response on an externally submitted dispute.
+- /recoveries: recoveries
+- /root-causes: Review recurring deductions by retailer, reason and currency.
+- /owner-workload: Review each operator's open balance and reconciliation holds.
+- /month-close: Reconcile deductions, recoveries, accepted balances and open amounts by currency.
+- /actions: actions
+- /audit: audit
+- /compliance: compliance
+- /card: card <deduction reference or id>
+- /follow-up: follow-up <deduction> --date=YYYY-MM-DD --proof=<contact note reference> --actor=<name>
+- /weekly-review: Read attention, readiness, follow-ups, root cause actions and month-close together.
+- /add: add retailer|deduction --data=<JSON> --actor=<name>
+- /reconcile: reconcile <deduction> --proof=<remittance reference> --actor=<name>
+- /set-deadline: set-deadline <deduction> --date=YYYY-MM-DD --proof=<retailer terms reference> --actor=<name>
+- /evidence: evidence <deduction> --kind=invoice|delivery|agreement|inspection|other --proof=<reference> --actor=<name>
+- /record-dispute: record-dispute <deduction> --reference=<portal receipt> --date=YYYY-MM-DD --follow-up=YYYY-MM-DD --amount=<decimal> --actor=<name>
+- /record-recovery: record-recovery <deduction> --reference=<remittance line> --date=YYYY-MM-DD --amount=<decimal> --actor=<name>
+- /close: close <deduction> --proof=<resolution reference> --actor=<name>
+- /accept: accept <deduction> --proof=<approved write-off> --actor=<name>
+- /action: action <deduction> --title=<root cause task> --owner=<name> --date=YYYY-MM-DD --actor=<name>
+- /close-action: close-action <action id or title> --proof=<completion evidence> --actor=<name>
+- /log: log <deduction> --note=<text> --actor=<name>
+- /review-privacy: review-privacy <retailer> --proof=<access review> --date=<retention review date> --actor=<name>
+- /import: import trewup --file=<CSV saved from Excel> --map=<JSON headings map> --actor=<name> [--dry-run]
+- /export: export --out=<new directory>
+- /draft-dispute: draft-dispute <deduction>
+- /draft-weekly-review: draft-weekly-review
+- /customise: Make an authorised field or rule change through a tested forward migration.
+- /new-view: Add a read-only branded report.
 
-| When the operator asks for... | Use this |
-|---|---|
-| <!-- TODO(author): one row per slash command --> | `/...` |
+## Locations
 
-If an ask fits nothing here, run the CLI directly (`npm run <cli> -- --help`) and then propose a new command for it.
-
-## Hard rules
-
-- Never send email or messages from here. Draft to `drafts/`, a person sends.
-- Never delete records without an explicit yes in this session. Prefer marking closed or archived.
-- Never invent a record. If a name is ambiguous, list the candidates and ask.
-- The database is the source of truth. If the answer is not in it, say so.
-
-## Where things live
-
-- `scripts/` the CLI. `scripts/lib/db.mjs` picks `DATABASE_URL` (Postgres, Supabase) or the embedded database in `.data/`.
-- `supabase/migrations/` the schema, plain SQL. `npm run migrate` applies it.
-- `.claude/commands/` the slash commands. Add one every time the same ask comes twice.
-- `docs/` the thesis and the guide for moving off TrewUp.
-
-Built by Enterprise DNA. Installed and run for you as part of Omni: https://enterprisedna.co/omni/instead-of/trewup
+supabase/migrations holds the schema. scripts/deductions.mjs is the domain CLI. views.json and documents.json define read-only outputs. brand.json holds the business identity. drafts/ holds messages and reviews that have not been sent.

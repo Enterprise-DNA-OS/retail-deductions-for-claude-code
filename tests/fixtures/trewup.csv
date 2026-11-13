@@ -1,0 +1,3 @@
+Distributor,Deduction ID,Invoice,Category,Currency,Amount,Date,Owner
+Export Distributor,000014,INV-201,shortage,USD,510.25,2026-01-02,Casey
+Export Distributor,000015,INV-202,pricing,USD,98.00,2026-01-03,Casey

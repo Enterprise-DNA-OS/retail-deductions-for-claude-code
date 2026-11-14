@@ -4,7 +4,7 @@ Know which short payment needs evidence, which dispute is due, and which recover
 
 | Do it yourself | We customise it | We run it for you |
 |---|---|---|
-| Install the free desk below. | Your retailer rules, export mapping and reporting. [Book a call](https://enterprisedna.co/omni/book/?offer=replace-software&utm_campaign=trewup&utm_medium=readme). | Installed, connected and operated through Omni by Enterprise DNA. One setup fee, then a retainer. [See the offer](https://enterprisedna.co/omni/instead-of/trewup). |
+| Install the free desk below. | Your retailer rules, export mapping and reporting. [Book a call](https://enterprisedna.co/omni/book/?offer=replace-software&utm_campaign=trewup&utm_medium=readme). | Installed, connected and operated through Omni by Enterprise DNA. One setup fee, then a retainer. [See the offer](https://enterprisedna.co/omni/instead-of/trewup?utm_source=github&utm_medium=readme&utm_campaign=trewup). |
 
 Built for deduction investigation, evidence indexes, external dispute receipts, partial recoveries and corrective actions. It does not recreate TrewUp's distributor data collection, depletion analytics or portal connections. [Scope](docs/why-no-front-end.md).
 
